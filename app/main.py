@@ -12,3 +12,4 @@ def read_root():
     return {"message": "Welcome to the Chat AI Assistant API"}
 
 # hi
+# HI Daniel!!! I hope that we will win this hackathon
