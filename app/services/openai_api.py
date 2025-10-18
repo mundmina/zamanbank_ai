@@ -2,7 +2,6 @@
 import os
 from typing import List, Optional
 from openai import OpenAI
-from openai.openai_object import OpenAIObject
 from app.core.config import settings
 
 # Load configuration from environment or constants
