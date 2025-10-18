@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-from app.services.chat_ai import process_message
+from app.services.openai_api import ask_gpt
+from app.models.schemas import ChatRequest, ChatResponse
 
-router = APIRouter()
+router = APIRouter(prefix="/chat", tags=["Chat"])
 
-@router.post("/")
-async def chat(message: str):
-    response = process_message(message)
-    return {"response": response}
+@router.post("/", response_model=ChatResponse)
+def chat_with_ai(data: ChatRequest):
+    reply = ask_gpt(data.message)
+    return ChatResponse(reply=reply)
