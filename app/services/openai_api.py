@@ -29,25 +29,30 @@ def ask_gpt(
     Send a chat request to GPT model and return the text reply.
     You can pass conversation history if you implement memory.
     """
-    messages = []
-    # add system prompt
-    messages.append({"role": "system", "content": SYSTEM_PROMPT})
-    # optionally add history if you keep tracked chat
-    if history:
-        for msg in history:
-            messages.append(msg)
-    # add current user message
-    messages.append({"role": "user", "content": user_message})
+    try:
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
-    response: OpenAIObject = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages,
-        temperature=temperature,
-        max_tokens=max_tokens,
-    )
-    # Extract assistant reply
-    reply = response.choices[0].message.content
-    return reply
+        # optionally add history if conversation tracking is implemented
+        if history:
+            messages.extend(history)
+
+        # add current user message
+        messages.append({"role": "user", "content": user_message})
+
+        # make API call
+        response = client.chat.completions.create(
+            model=settings.MODEL_NAME,
+            messages=messages,
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
+
+        reply = response.choices[0].message.content
+        return reply
+
+    except Exception as e:
+        print("❌ Error while calling GPT:", e)
+        raise e
 
 def transcribe_audio(file) -> str:
     """
