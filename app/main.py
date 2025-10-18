@@ -1,15 +1,12 @@
 from fastapi import FastAPI
-from app.routers import chat, user
+from app.routers import chat, speech, products
 
-app = FastAPI(title="Chat AI Assistant")
+app = FastAPI(title="Zaman AI Assistant Backend")
 
-# Include routers
-app.include_router(chat.router, prefix="/chat", tags=["Chat"])
-app.include_router(user.router, prefix="/user", tags=["User"])
+app.include_router(chat.router)
+app.include_router(speech.router)
+app.include_router(products.router)
 
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to the Chat AI Assistant API"}
-
-# hi
-# HI Daniel!!! I hope that we will win this hackathon
+def home():
+    return {"message": "Zaman AI Assistant Backend is running successfully."}
